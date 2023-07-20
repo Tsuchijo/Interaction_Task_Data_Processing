@@ -1,0 +1,2 @@
+trial_numbers,cue_time in s,M5_L_rewards,M5_L_beambreak_time in s,M5_L_reward time in s,M6_R_rewards,M6_R_beambreak_time in s,M6_R_reward time in s,M5_L_beambreak_time,M6_R_beambreak_time,cue_time
+,202307141406110,1,202307141406140,202307141406141,1,202307141406211,202307141406212,1689368774.064123,1689368781.1367996,1689368771.0583403

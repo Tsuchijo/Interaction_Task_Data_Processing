@@ -1,0 +1,2 @@
+trial_numbers,cue_time in s,M1_L_rewards,M1_L_beambreak_time in s,M1_L_reward time in s,M2_R_rewards,M2_R_beambreak_time in s,M2_R_reward time in s,M1_L_beambreak_time,M1_L_reward time,M2_R_beambreak_time,M2_R_reward time,cue_time
+,20230718151400199833,1,20230718151404261423,202307181514043,1,20230718151402204700,202307181514022,1689718444.2614229,1689718444.3158534,1689718442.2047002,1689718442.2589662,1689718440.1998327
