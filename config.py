@@ -1,0 +1,19 @@
+# Config folder to store references to all data files
+# Path: config.py
+
+# directory absolute path
+import os
+
+PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
+# Local paths
+successful_trial_path = PROJECT_ROOT + '/data/successful_trials_by_day/'
+media_path = PROJECT_ROOT + '/data/media/'
+marker_path= PROJECT_ROOT + '/data/marker_reference/'
+
+# Remote paths
+teamshare = '/mnt/teams/TM_Lab/Arjun Bhaskaran/'
+remote_trial_path = teamshare + 'Social interaction project/csv files/'
+remote_video_path = teamshare + 'Social interaction project/videos/'
+
+# Output paths
+video_output_path = 'mnt/teams/Tsuchitori/social_interaction_trials/'
