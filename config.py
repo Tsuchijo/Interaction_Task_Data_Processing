@@ -16,4 +16,5 @@ remote_trial_path = teamshare + 'Social interaction project/csv files/'
 remote_video_path = teamshare + 'Social interaction project/videos/'
 
 # Output paths
-video_output_path = 'mnt/teams/Tsuchitori/social_interaction_trials/'
+video_output_path = '/mnt/teams/Tsuchitori/social_interaction_trials/'
+movement_extracted_output_path = '/mnt/teams/Tsuchitori/social_interaction_trials_movement_extracted/'

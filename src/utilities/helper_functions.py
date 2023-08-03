@@ -108,3 +108,15 @@ class helper_functions:
             transformations.append(transformation)
             num_matches.append(num_match)
         return transformations[num_matches.index(max(num_matches))], max(num_matches)
+    
+    def save_video(video, path):
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        out = cv2.VideoWriter(path, fourcc, 30.0, (video.shape[2], video.shape[1]))
+        # check if output folder exists if not create it
+        if not os.path.exists(os.path.dirname(path)):
+            os.makedirs(os.path.dirname(path))
+        for frame in video:
+            # convert frame to BGR for writing from grayscale 
+            frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
+            out.write(frame)
+        out.release()
