@@ -104,7 +104,7 @@ class helper_functions:
         transformations = []
         num_matches = []
         for reference in references_images:
-            transformation, num_match = find_area_and_transform(scene, reference)
+            transformation, num_match = helper_functions.find_area_and_transform(scene, reference)
             transformations.append(transformation)
             num_matches.append(num_match)
         return transformations[num_matches.index(max(num_matches))], max(num_matches)

@@ -14,6 +14,7 @@ marker_path= PROJECT_ROOT + '/data/marker_reference/'
 teamshare = '/mnt/teams/TM_Lab/Arjun Bhaskaran/'
 remote_trial_path = teamshare + 'Social interaction project/csv files/'
 remote_video_path = teamshare + 'Social interaction project/videos/'
+remote_photometry_path = teamshare + 'Social interaction project/fiber photometry data/Mice with ID/'
 
 # Output paths
 video_output_path = '/mnt/teams/Tsuchitori/social_interaction_trials/'
