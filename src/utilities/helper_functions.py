@@ -107,11 +107,11 @@ class helper_functions:
             transformation, num_match = helper_functions.find_area_and_transform(scene, reference)
             transformations.append(transformation)
             num_matches.append(num_match)
-        return transformations[num_matches.index(max(num_matches))], max(num_matches)
+        return transformations[num_matches.index(max(num_matches))], max(num_matches), paths[num_matches.index(max(num_matches))]
     
     def save_video(video, path):
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        out = cv2.VideoWriter(path, fourcc, 30.0, (video.shape[2], video.shape[1]))
+        out = cv2.VideoWriter(path, fourcc, 25, (video.shape[2], video.shape[1]))
         # check if output folder exists if not create it
         if not os.path.exists(os.path.dirname(path)):
             os.makedirs(os.path.dirname(path))
