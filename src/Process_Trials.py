@@ -19,7 +19,8 @@ import tdt
 
 def write_successful_trials(video, df, offset, path):
     reference_path = [config.marker_path + dir for dir in os.listdir(config.marker_path)]
-    # iterate through df and for each successfull trial get the start time in seconds
+    # iterate through df and for each successful trial get the start time in seconds
+    reference_path.sort(reverse=True)
     date_format = "%H:%M:%S.%f"
     reference_image = cv2.imread(reference_path[0])
     first_frame = video.read()[1]
@@ -31,7 +32,7 @@ def write_successful_trials(video, df, offset, path):
     for index, row in df.iterrows():
         if row['successful_trials']:
             transformation_new, num_match_new, ref_path = hf.find_matching_transformation(video.read()[1], reference_path)
-            if num_match_new > num_match and num_match_new > 30:
+            if num_match_new > num_match and num_match_new > 15:
                 transformation = transformation_new
                 num_match = num_match_new
                 reference_image = cv2.imread(ref_path)
@@ -83,13 +84,9 @@ def generate_csv_files():
     file_names = list(log_data.keys())
     file_names.sort()
     successful_trials_by_day = dict()
-    M1_M2 = []
-    M3_M4 = []
-    M5_M6 = []
-    M7_M8 = []
     for file in file_names:
         df = log_data[file]
-        matches = [ re.match('(M)[1-8]_?[L | R]?_beambreak_time in s', name) for name in df.columns.to_list()]
+        matches = [ re.match('((M[1-8])|(Toy))_?[L | R]?_beambreak_time in s', name) for name in df.columns.to_list()]
         L, R = None, None
         for match in matches:
             if match is not None:
@@ -108,9 +105,15 @@ def generate_csv_files():
         cue_times = df['cue_time in s'].apply(lambda x : hf.process_time_string(x))
         # subtract the start time from each cue time
         time_since_start = cue_times.apply(lambda x : x - start_time)
+
+           
         # Get the names of each mouse
-        mouse_name_L = L.split('_')[0]
-        mouse_name_R = R.split('_')[0]
+        try:
+            mouse_name_L = L.split('_')[0]
+            mouse_name_R = R.split('_')[0]
+        except:
+            print('Error: Mouse names not found for ' + file)
+            continue
         # subtract the 2nd collumn from the 4th abd 7th collumns
         mouse_L_break_time = df.apply(lambda x : hf.subtract_time_series(x, 'cue_time in s', L), axis=1)
         mouse_R_break_time = df.apply(lambda x : hf.subtract_time_series(x, 'cue_time in s', R), axis=1)
@@ -151,14 +154,6 @@ def generate_csv_files():
             'cue_times': cue_times,
             'mouse_L_reward_time': mouse_L_reward_time,
             'mouse_R_reward_time': mouse_R_reward_time}
-        if mouse_name_L == 'M1' or mouse_name_L == 'M2':
-            M1_M2.append(file)
-        elif mouse_name_L == 'M3' or mouse_name_L == 'M4':
-            M3_M4.append(file)
-        elif mouse_name_L == 'M5' or mouse_name_L == 'M6':
-            M5_M6.append(file)
-        elif mouse_name_L == 'M7' or mouse_name_L == 'M8':
-            M7_M8.append(file)
         # convert successful trials by day to a dataframe
         successful_trials_df = pd.DataFrame(successful_trials_by_day[file])
         # save the dataframe to a csv file
@@ -331,14 +326,29 @@ def extract_interactions():
             if len(movement) < 2:
                 continue
             if np.max(movement) > 1000:
-                # find the first frame where the movement is greater than 1000
-                start = np.where(movement > 1000)[0][0]
-                # find the last frame where the movement is greater than 1000
-                end = np.where(movement > 1000)[0][-1]
-                movemnent_extracted_video = video[start:end]
-                # save the video to the movement_extracted folder
-                hf.save_video(movemnent_extracted_video, config.movement_extracted_output_path[:-1] + '/' + name.split('_')[0] + '/' + name + '_start-' + str(start) + '_end-' + str(end) + '.mp4')
-                hf.save_video(video, config.movement_extracted_output_path[:-1] + '/' + name.split('_')[0] + '/' + name + '_full_length' + '.mp4')
+                # find all frames where the movement rises above 1000
+                movement_start = rising_edge(movement)
+                # find all frames where the movement falls below 1000
+                movement_end = falling_edge(movement)
+                # # find the first frame where the movement is greater than 1000
+                # start = np.where(movement > 1000)[0][0]
+                # # find the last frame where the movement is greater than 1000
+                # end = np.where(movement > 1000)[0][-1]
+                for start, end in zip(movement_start, movement_end):
+                    movemnent_extracted_video = video[int(start):int(end)]
+                    # save the video to the movement_extracted folder
+                    hf.save_video(movemnent_extracted_video, config.movement_extracted_output_path[:-1] + '/' + name.split('_')[0] + '/' + name + '_start-' + str(start) + '_end-' + str(end) + '.mp4')
+                    hf.save_video(video, config.movement_extracted_output_path[:-1] + '/' + name.split('_')[0] + '/' + name + '_full_length' + '.mp4')
+
+def rising_edge(data, thresh=1000):
+    sign = data >= thresh
+    pos = np.where(np.convolve(sign, [1, -1]) == 1)
+    return pos[0]
+
+def falling_edge(data, thresh=1000):
+    sign = data >= thresh
+    pos = np.where(np.convolve(sign, [1, -1]) == -1)
+    return pos[0]
 
 ## Main function
 def main():
