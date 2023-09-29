@@ -207,7 +207,7 @@ def process_photometry_data():
     # create dict to hold correspondence between photometry data, trial data, and video data keyed by day
     experiment_data = dict()
     for day in os.listdir(config.remote_photometry_path):
-        trial_paths = [config.remote_photometry_path + day + '/' + x for x in os.listdir(config.remote_photometry_path + day) if re.match('M[1-8]_F1_M[1-8]_F2', x)]
+        trial_paths = [config.remote_photometry_path + day + '/' + x for x in os.listdir(config.remote_photometry_path + day) if re.match('(M[1-8]|(Toy))_F1_(M[1-8]|(Toy))_F2', x)]
         date = day.split('-')[-1]
         # Search through all trials recorded and find ones matching the day of photometry recording
         matching_trials = [x for x in os.listdir(config.successful_trial_path) if x[2:8] == date]
@@ -224,15 +224,19 @@ def process_photometry_data():
         for trial in trial_paths:
             data = None
             # find the two mouse ids by regex matching to M1-8
-            mouse_id = re.findall('M[1-8]', trial)
-            mouse_id = mouse_id[0]+mouse_id[1]
+            mouse_id = re.findall('(M[1-8])|(Toy)', trial)
+            mouse_id_cat = mouse_id[0][0] + mouse_id[1][0]
             # get all indices of matching mouse ids
-            matching_indices = [i for i, x in enumerate(mice_ids) if x == mouse_id]
+            matching_indices = [i for i, x in enumerate(mice_ids) if x == mouse_id_cat]
             data = tdt.read_block(trial, t2=1)
             if data is None:
                 print('No data found for ' + trial)
                 continue
-            print('Processing ' + trial)
+            if len(matching_indices) == 0:
+                print('No matching trial found for ' + str(mouse_id_cat))
+                continue
+            else:
+                print('matching trials for ' + str(mouse_id))
             start_time = data.info.start_date
             # iterate through all matching trials and find the one with the closest start time
             closest_trial = None
@@ -356,7 +360,5 @@ def main():
     segment_successfull_videos()
     process_photometry_data()
     extract_interactions()
-
-
 
 main()
