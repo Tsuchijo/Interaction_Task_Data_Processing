@@ -2,7 +2,6 @@ absl-py==1.4.0
 asttokens==2.2.1
 async-timeout==4.0.2
 backcall==0.2.0
-backports.functools-lru-cache @ file:///home/conda/feedstock_root/build_artifacts/backports.functools_lru_cache_1687772187254/work
 bitstring==4.0.2
 bleak==0.20.2
 cachetools==5.3.1
@@ -20,7 +19,6 @@ fonttools==4.41.1
 google-auth==2.20.0
 google-auth-oauthlib==1.0.0
 grpcio==1.54.2
-importlib-metadata @ file:///home/conda/feedstock_root/build_artifacts/importlib-metadata_1688754491823/work
 ipykernel==6.23.3
 ipython==8.14.0
 jedi==0.18.2
@@ -54,14 +52,11 @@ opencv-python==4.8.0.74
 packaging==23.1
 pandas==2.0.3
 parso==0.8.3
-pexpect @ file:///home/conda/feedstock_root/build_artifacts/pexpect_1667297516076/work
 pickleshare==0.7.5
 Pillow==10.0.0
-platformdirs @ file:///home/conda/feedstock_root/build_artifacts/platformdirs_1689538620473/work
 prompt-toolkit==3.0.38
 protobuf==4.23.3
 psutil==5.9.5
-ptyprocess @ file:///home/conda/feedstock_root/build_artifacts/ptyprocess_1609419310487/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
 pure-eval==0.2.2
 pyasn1==0.5.0
 pyasn1-modules==0.3.0
@@ -78,7 +73,6 @@ rsa==4.9
 scikit-learn==1.3.0
 scipy==1.11.1
 seaborn==0.12.2
-six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
 stack-data==0.6.2
 sympy==1.12
 tdr==0.0.1
@@ -90,8 +84,6 @@ torch==2.0.1
 tornado==6.3.2
 traitlets==5.9.0
 triton==2.0.0
-typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1688315532570/work
 tzdata==2023.3
 wcwidth==0.2.6
 Werkzeug==2.3.6
-zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1689374466814/work

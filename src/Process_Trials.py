@@ -354,11 +354,89 @@ def falling_edge(data, thresh=1000):
     pos = np.where(np.convolve(sign, [1, -1]) == -1)
     return pos[0]
 
+def detect_triggers(data, threshold=0.0005):
+    smoothed_data = np.convolve(data, np.ones(1000)/1000, mode='same')
+    diff_data = np.diff(smoothed_data)
+    diff_data = np.convolve(diff_data, np.ones(1000)/1000, mode='same')
+    #plt.plot(diff_data[:1000000])
+    recording = False
+    triggered_data = []
+    trial_indices = []
+    for i in range(len(diff_data)):
+        if diff_data[i] > threshold and not recording:
+            recording = True
+            trial_indices.append(i)
+        elif diff_data[i] < -threshold and recording:
+            recording = False
+            
+        elif recording and diff_data[i] < threshold and diff_data[i] > -threshold:
+            triggered_data.append(data[i])
+    return triggered_data, trial_indices
+
+## Given a block of tdt data and a list of time deltas from the start of the trial, return a list of trials
+# params:
+#   stream_data_block: tdt data block object
+#   delta_time: list of time deltas from the start of the trial, floating point seconds
+def stream_to_trials(stream_data_block, delta_time, threshold):
+    fs = stream_data_block.fs
+    stream = stream_data_block.data
+    _, trigger_indices = detect_triggers(stream, threshold=threshold)
+    print(len(trigger_indices))
+    print(len(delta_time))
+    if len(trigger_indices) == len(delta_time):
+        skip_index = 1
+    else:
+        skip_index = 1
+    try:
+        trials = [ stream[trigger_indices[skip_index]:][int (time * fs + fs) : int ((time + 31) * fs)] for time in delta_time]
+    # catch index error
+    except:
+        print(delta_time[-1] * fs)
+        print(trigger_indices)
+        print(len(stream[trigger_indices[1]:]))
+    return trials
+
+
+## given a date, return an dict of photometry data, with each stream from the block broken up into trials basedon the csv
+# params:
+#   date: string of date in format 'YYYY-MM-DD'
+#   returns: dict {
+#    '465A': array(# trials, 30 secs * fs)
+#    '405A': array(# trials, 30 secs * fs)
+#    '465C': array(# trials, 30 secs * fs)
+#    '405C': array(# trials, 30 secs * fs)
+# }
+def get_trial_photometry_data(key, dict):
+    date_format = "%Y-%m-%d %H:%M:%S.%f"
+    date_list = pd.read_csv(dict[key]['trial'])['cue_times'].to_list()
+    data_block = tdt.read_block(dict[key]['photometry'])
+    delta_time = [(datetime.datetime.strptime(date, date_format) - datetime.datetime.strptime(date_list[0], date_format)).total_seconds() for date in date_list]
+    return {
+        "465A" : stream_to_trials(data_block.streams['_465A'], delta_time, threshold=0.2),
+        "405A" : stream_to_trials(data_block.streams['_405A'], delta_time, threshold=0.01),
+        '465C' : stream_to_trials(data_block.streams['_465C'], delta_time, threshold=0.2),
+        '405C' : stream_to_trials(data_block.streams['_405C'], delta_time, threshold=0.01),
+        'fs' : data_block.streams['_465A'].fs
+    }
+
+def save_all_trials():
+    experiment_data = pickle.load(open(config.PROJECT_ROOT + '/data/experiment_data.pickle', 'rb'))
+    for trial_date in sorted(experiment_data, reverse=True):
+        data = get_trial_photometry_data(trial_date, experiment_data)
+       # Convert the dictionary to a DataFrame
+        df = pd.DataFrame(data)
+        # Save the DataFrame as a csv
+        df.to_csv(config.photometry_output_path + trial_date + '.csv')
+
+
+
+
 ## Main function
 def main():
     generate_csv_files()
     segment_successfull_videos()
     process_photometry_data()
     extract_interactions()
+    save_all_trials()
 
 main()

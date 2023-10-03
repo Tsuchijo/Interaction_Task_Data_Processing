@@ -20,3 +20,4 @@ remote_photometry_path = teamshare + 'Social interaction project/Littermate inte
 # Output paths
 video_output_path = '/mnt/teams/Tsuchitori/social_interaction_trials/'
 movement_extracted_output_path = '/mnt/teams/Tsuchitori/social_interaction_trials_movement_extracted/'
+photometry_output_path = '/mnt/teams/Tsuchitori/social_interaction_trials_photometry/'
