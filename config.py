@@ -12,12 +12,12 @@ marker_path= PROJECT_ROOT + '/data/marker_reference/'
 movement_labels_path = PROJECT_ROOT + '/data/movement_labels/'
 
 # Remote paths
-teamshare = '/mnt/teams/TM_Lab/Arjun Bhaskaran/'
+teamshare = '/mnt/TM_Lab/Arjun Bhaskaran/'
 remote_trial_path = teamshare + 'Social interaction project/Littermate interaction/csv files/'
 remote_video_path = teamshare + 'Social interaction project/Littermate interaction/videos/'
 remote_photometry_path = teamshare + 'Social interaction project/Littermate interaction/fiber photometry data/Mice with ID/'
 
 # Output paths
-video_output_path = '/mnt/teams/Tsuchitori/social_interaction_trials/'
-movement_extracted_output_path = '/mnt/teams/Tsuchitori/social_interaction_trials_movement_extracted/'
-photometry_output_path = '/mnt/teams/Tsuchitori/social_interaction_trials_photometry/'
+video_output_path = '/mnt/Tsuchitori/social_interaction_trials/'
+movement_extracted_output_path = '/mnt/Tsuchitori/social_interaction_trials_movement_extracted/'
+photometry_output_path = '/mnt/Tsuchitori/social_interaction_trials_photometry/'
