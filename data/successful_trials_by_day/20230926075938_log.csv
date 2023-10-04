@@ -1,0 +1,4 @@
+,names,L,R,successful_trials,time_between_breaks,time_since_start,cue_times,mouse_L_reward_time,mouse_R_reward_time
+0,ToyM6,1.000004,1.000068,True,6.4000000000064e-05,0 days 00:00:05.000711,2023-09-26 07:59:43.000711,0.999989,1.000089
+1,ToyM6,1.000003,,False,,0 days 00:00:56.000984,2023-09-26 08:00:34.000984,1.999016,
+2,ToyM6,1.000003,,False,,0 days 00:01:48.000195,2023-09-26 08:01:26.000195,1.000005,

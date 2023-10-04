@@ -1,0 +1,4 @@
+,names,L,R,successful_trials,time_between_breaks,time_since_start,cue_times
+0,M5M6,9.100000000000001,4.0,True,5.100000000000001,0 days 00:00:00.000500,2023-07-13 09:38:25.000500
+1,M5M6,9.0,,False,,0 days 00:00:14.000800,2023-07-13 09:38:39.000800
+2,M5M6,,,False,,0 days 00:00:41,2023-07-13 09:39:06.000000
