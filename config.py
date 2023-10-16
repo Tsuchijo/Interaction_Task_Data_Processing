@@ -13,9 +13,9 @@ movement_labels_path = PROJECT_ROOT + '/data/movement_labels/'
 
 # Remote paths
 teamshare = '/mnt/teams/TM_Lab/Arjun Bhaskaran/'
-remote_trial_path = teamshare + 'Social interaction project/Littermate interaction/csv files/'
-remote_video_path = teamshare + 'Social interaction project/Littermate interaction/videos/'
-remote_photometry_path = teamshare + 'Social interaction project/Littermate interaction/fiber photometry data/Mice with ID/'
+remote_trial_path = teamshare + 'Social interaction project/No Cue/csv files/'
+remote_video_path = teamshare + 'Social interaction project/No Cue/videos/'
+remote_photometry_path = teamshare + 'Social interaction project/No Cue/fiber photometry data/Mice with ID/'
 
 # Output paths
 video_output_path = '/mnt/teams/Tsuchitori/social_interaction_trials/'

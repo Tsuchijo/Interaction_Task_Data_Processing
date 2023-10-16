@@ -13,12 +13,13 @@ import math
 import argparse
 import pickle
 import utilities.helper_functions as hf
-import config
 import cv2
 import tdt
+import config
+
 
 def write_successful_trials(video, df, offset, path):
-    reference_path = [config.marker_path + dir for dir in os.listdir(config.marker_path)]
+    reference_path = [config.marker_path + dir for dir in os.listdir(config.marker_path) if dir != '.DS_Store']
     # iterate through df and for each successful trial get the start time in seconds
     reference_path.sort(reverse=True)
     date_format = "%H:%M:%S.%f"
@@ -76,7 +77,7 @@ def generate_csv_files():
     path = config.remote_trial_path
     processed_data_path = config.successful_trial_path
     files = os.listdir(path)
-    files = [path + file for file in files]
+    files = [path + file for file in files if file != '.DS_Store']
 
     # load a dict of files keyed with the file name
     log_data = {file.split('/')[-1].split('.')[0]: pd.read_csv(file) for file in files}
@@ -207,6 +208,8 @@ def process_photometry_data():
     # create dict to hold correspondence between photometry data, trial data, and video data keyed by day
     experiment_data = dict()
     for day in os.listdir(config.remote_photometry_path):
+        if 'Social' not in day:
+            continue
         trial_paths = [config.remote_photometry_path + day + '/' + x for x in os.listdir(config.remote_photometry_path + day) if re.match('(M[1-8]|(Toy))_F1_(M[1-8]|(Toy))_F2', x)]
         date = day.split('-')[-1]
         # Search through all trials recorded and find ones matching the day of photometry recording
@@ -393,7 +396,7 @@ def stream_to_trials(stream_data_block, delta_time, threshold):
     except:
         print(delta_time[-1] * fs)
         print(trigger_indices)
-        print(len(stream[trigger_indices[1]:]))
+        #print(len(stream[trigger_indices[1]:]))
     return trials
 
 
@@ -426,7 +429,7 @@ def save_all_trials():
        # Convert the dictionary to a DataFrame
         df = pd.DataFrame(data)
         # Save the DataFrame as a csv
-        df.to_csv(config.photometry_output_path + trial_date + '.csv')
+        df.to_pickle(config.photometry_output_path + trial_date + '.pickle')
 
 
 
